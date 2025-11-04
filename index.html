@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live world clock</title>
+</head>
+
+<body>
+    <section class="">
+        <div class="container my-4">
+
+            <!-- Clocks Section -->
+            <section style="padding:40px 20px;background:#EDECF2;font-family:Arial,sans-serif;">
+                <h1 style="text-align:center;margin-bottom:30px;color:#333;">Analog Clocks</h1>
+
+                <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:40px;">
+                    <div class="clock-wrapper">
+                        <div class="clock-container" data-tz="Asia/Dhaka">
+                            <div class="clock">
+                                <div class="hour"></div>
+                                <div class="minute"></div>
+                                <div class="second"></div>
+                            </div>
+                            <p class="clock-label">Dhaka</p>
+                        </div>
+                        <button class="update-clock-btn">Add / Change City</button>
+                    </div>
+
+                    <div class="clock-wrapper">
+                        <div class="clock-container" data-tz="Europe/London">
+                            <div class="clock">
+                                <div class="hour"></div>
+                                <div class="minute"></div>
+                                <div class="second"></div>
+                            </div>
+                            <p class="clock-label">London</p>
+                        </div>
+                        <button class="update-clock-btn">Add / Change City</button>
+                    </div>
+
+                    <div class="clock-wrapper">
+                        <div class="clock-container" data-tz="America/New_York">
+                            <div class="clock">
+                                <div class="hour"></div>
+                                <div class="minute"></div>
+                                <div class="second"></div>
+                            </div>
+                            <p class="clock-label">New York</p>
+                        </div>
+                        <button class="update-clock-btn">Add / Change City</button>
+                    </div>
+
+                    <div class="clock-wrapper">
+                        <div class="clock-container" data-tz="Asia/Tokyo">
+                            <div class="clock">
+                                <div class="hour"></div>
+                                <div class="minute"></div>
+                                <div class="second"></div>
+                            </div>
+                            <p class="clock-label">Tokyo</p>
+                        </div>
+                        <button class="update-clock-btn">Add / Change City</button>
+                    </div>
+                </div>
+
+                <style>
+                    .clock-wrapper {
+                        text-align: center;
+                    }
+
+                    .clock {
+                        width: 120px;
+                        height: 120px;
+                        border: 6px solid #333;
+                        border-radius: 50%;
+                        position: relative;
+                        margin: auto;
+                        background: #fff;
+                    }
+
+                    .clock::after {
+                        content: "";
+                        width: 8px;
+                        height: 8px;
+                        background: #333;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        border-radius: 50%;
+                    }
+
+                    .hour,
+                    .minute,
+                    .second {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform-origin: bottom center;
+                        transform: translate(-50%, -100%) rotate(0deg);
+                    }
+
+                    .hour {
+                        width: 5px;
+                        height: 35px;
+                        background: #333;
+                    }
+
+                    .minute {
+                        width: 3px;
+                        height: 45px;
+                        background: #555;
+                    }
+
+                    .second {
+                        width: 2px;
+                        height: 50px;
+                        background: #F15A29;
+                    }
+
+                    .clock-label {
+                        margin-top: 10px;
+                        font-weight: bold;
+                        color: #333;
+                    }
+
+                    .number {
+                        position: absolute;
+                        font-weight: bold;
+                        color: #333;
+                    }
+
+                    .update-clock-btn {
+                        margin-top: 10px;
+                        padding: 8px 14px;
+                        font-size: 14px;
+                        background: #F15A29;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: 0.3s;
+                    }
+
+                    .update-clock-btn:hover {
+                        background: #d8481d;
+                    }
+                </style>
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                <script>
+                    // Cities array (use everywhere)
+                    const cities = [
+                        { name: 'Dhaka, Bangladesh', tz: 'Asia/Dhaka', abbr: 'BST' },
+                        { name: 'New York, USA', tz: 'America/New_York', abbr: 'EST/EDT' },
+                        { name: 'Los Angeles, USA', tz: 'America/Los_Angeles', abbr: 'PST/PDT' },
+                        { name: 'London, UK', tz: 'Europe/London', abbr: 'GMT/BST' },
+                        { name: 'Paris, France', tz: 'Europe/Paris', abbr: 'CET/CEST' },
+                        { name: 'Berlin, Germany', tz: 'Europe/Berlin', abbr: 'CET/CEST' },
+                        { name: 'Tokyo, Japan', tz: 'Asia/Tokyo', abbr: 'JST' },
+                        { name: 'Beijing, China', tz: 'Asia/Shanghai', abbr: 'CST' },
+                        { name: 'Sydney, Australia', tz: 'Australia/Sydney', abbr: 'AEST/AEDT' },
+                        { name: 'Moscow, Russia', tz: 'Europe/Moscow', abbr: 'MSK' },
+                        { name: 'Dubai, UAE', tz: 'Asia/Dubai', abbr: 'GST' },
+                        { name: 'Singapore', tz: 'Asia/Singapore', abbr: 'SGT' },
+                        { name: 'Hong Kong', tz: 'Asia/Hong_Kong', abbr: 'HKT' },
+                        { name: 'Istanbul, Turkey', tz: 'Europe/Istanbul', abbr: 'TRT' },
+                        { name: 'Seoul, South Korea', tz: 'Asia/Seoul', abbr: 'KST' },
+                        { name: 'New Delhi, India', tz: 'Asia/Kolkata', abbr: 'IST' },
+                        { name: 'Bangkok, Thailand', tz: 'Asia/Bangkok', abbr: 'ICT' },
+                        { name: 'Jakarta, Indonesia', tz: 'Asia/Jakarta', abbr: 'WIB' },
+                        { name: 'Kuala Lumpur, Malaysia', tz: 'Asia/Kuala_Lumpur', abbr: 'MYT' },
+                        { name: 'Rome, Italy', tz: 'Europe/Rome', abbr: 'CET/CEST' },
+                        { name: 'Madrid, Spain', tz: 'Europe/Madrid', abbr: 'CET/CEST' },
+                        { name: 'Mexico City, Mexico', tz: 'America/Mexico_City', abbr: 'CST/CDT' },
+                        { name: 'Rio de Janeiro, Brazil', tz: 'America/Sao_Paulo', abbr: 'BRT' },
+                        { name: 'Buenos Aires, Argentina', tz: 'America/Argentina/Buenos_Aires', abbr: 'ART' },
+                        { name: 'Cape Town, South Africa', tz: 'Africa/Johannesburg', abbr: 'SAST' },
+                        { name: 'Cairo, Egypt', tz: 'Africa/Cairo', abbr: 'EET' },
+                        { name: 'Toronto, Canada', tz: 'America/Toronto', abbr: 'EST/EDT' },
+                        { name: 'Vancouver, Canada', tz: 'America/Vancouver', abbr: 'PST/PDT' },
+                        { name: 'Chicago, USA', tz: 'America/Chicago', abbr: 'CST/CDT' },
+                        { name: 'San Francisco, USA', tz: 'America/Los_Angeles', abbr: 'PST/PDT' },
+                        { name: 'Washington D.C., USA', tz: 'America/New_York', abbr: 'EST/EDT' }
+                    ];
+
+                    // Generate clock numbers
+                    function generateClockNumbers(clockEl) {
+                        const numberPos = [
+                            { top: "10%", left: "72%" }, { top: "22%", left: "85%" }, { top: "50%", left: "92%" },
+                            { top: "78%", left: "85%" }, { top: "90%", left: "72%" }, { top: "92%", left: "50%" },
+                            { top: "90%", left: "28%" }, { top: "78%", left: "15%" }, { top: "50%", left: "8%" },
+                            { top: "22%", left: "15%" }, { top: "10%", left: "28%" }, { top: "5%", left: "50%" }
+                        ];
+                        for (let i = 1; i <= 12; i++) {
+                            const div = document.createElement("div");
+                            div.classList.add("number", "number" + i);
+                            div.style.top = numberPos[i - 1].top;
+                            div.style.left = numberPos[i - 1].left;
+                            div.style.transform = "translate(-50%, -50%)";
+                            div.textContent = i;
+                            clockEl.appendChild(div);
+                        }
+                    }
+                    document.querySelectorAll(".clock").forEach(clock => generateClockNumbers(clock));
+
+                    function updateAnalogClock(clockEl, tz) {
+                        const now = new Date();
+                        const time = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+                        const hours = time.getHours() % 12;
+                        const minutes = time.getMinutes();
+                        const seconds = time.getSeconds();
+
+                        clockEl.querySelector(".hour").style.transform = `translate(-50%,-100%) rotate(${(hours + minutes / 60) * 30}deg)`;
+                        clockEl.querySelector(".minute").style.transform = `translate(-50%,-100%) rotate(${(minutes + seconds / 60) * 6}deg)`;
+                        clockEl.querySelector(".second").style.transform = `translate(-50%,-100%) rotate(${seconds * 6}deg)`;
+                    }
+
+                    function updateAllClocks() {
+                        document.querySelectorAll(".clock-container").forEach(clock => {
+                            updateAnalogClock(clock, clock.getAttribute("data-tz"));
+                        });
+                    }
+                    setInterval(updateAllClocks, 1000);
+                    updateAllClocks();
+
+                    // Clock update button
+                    document.querySelectorAll(".update-clock-btn").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            let optionsHtml = '<select id="swal-tz" class="swal2-select">';
+                            cities.forEach(city => {
+                                optionsHtml += `<option value="${city.tz}">${city.name} (${city.abbr})</option>`;
+                            });
+                            optionsHtml += '</select>';
+
+                            Swal.fire({
+                                title: "Select City",
+                                html: optionsHtml,
+                                width: 450,
+                                padding: '1.5rem',
+                                background: '#f9f9f9',
+                                color: '#333',
+                                showCancelButton: true,
+                                cancelButtonText: 'Cancel',
+                                confirmButtonText: 'Save',
+                                confirmButtonColor: '#F15A29',
+                                cancelButtonColor: '#888',
+                                focusConfirm: false,
+                                didOpen: () => {
+                                    const select = Swal.getPopup().querySelector('#swal-tz');
+                                    select.style.padding = '10px';
+                                    select.style.borderRadius = '6px';
+                                    select.style.border = '1px solid #ccc';
+                                    select.style.width = '100%';
+                                    select.style.fontSize = '14px';
+                                    select.style.maxHeight = '250px';
+                                    select.style.overflowY = 'auto';
+                                    select.style.overflowX = 'hidden';
+                                },
+                                preConfirm: () => {
+                                    const select = document.getElementById("swal-tz");
+                                    const selectedIndex = select.selectedIndex;
+                                    if (selectedIndex < 0) {
+                                        Swal.showValidationMessage("Please select a city");
+                                        return false;
+                                    }
+                                    return cities[selectedIndex];
+                                }
+                            }).then(result => {
+                                if (result.isConfirmed && result.value) {
+                                    const clockContainer = btn.previousElementSibling;
+                                    clockContainer.setAttribute("data-tz", result.value.tz);
+                                    clockContainer.querySelector(".clock-label").textContent = result.value.name;
+                                    updateAnalogClock(clockContainer, result.value.tz);
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </section>
+
+            <!-- World Clock Table Section -->
+            <section style="padding:40px 20px;background:#F0F0F5;font-family:Arial,sans-serif;min-height:70vh;">
+                <h1 style="text-align:center;margin-bottom:40px;color:#333;">World Clock Table</h1>
+                <div style="overflow-x:auto;">
+                    <table id="worldClockTable" style="width:100%;border-collapse:collapse;min-width:600px;">
+                        <thead>
+                            <tr style="background:#F15A29;color:white;">
+                                <th>#</th>
+                                <th>Country / City</th>
+                                <th>Time Zone</th>
+                                <th>Local Time</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <style>
+                    table td,
+                    table th {
+                        text-align: center;
+                        padding: 10px;
+                        border: 1px solid #ddd;
+                    }
+
+                    tbody tr:nth-child(even) {
+                        background: #f9f9f9;
+                    }
+
+                    @media (max-width:768px) {
+
+                        table th,
+                        table td {
+                            padding: 8px;
+                            font-size: 14px;
+                        }
+                    }
+
+                    @media (max-width:480px) {
+
+                        table th,
+                        table td {
+                            padding: 6px;
+                            font-size: 12px;
+                        }
+                    }
+                </style>
+
+                <script>
+                    function updateTable() {
+                        const tbody = document.querySelector('#worldClockTable tbody');
+                        tbody.innerHTML = '';
+                        const now = new Date();
+                        cities.forEach((city, index) => {
+                            const options = { timeZone: city.tz, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                            const timeString = now.toLocaleTimeString('en-US', options);
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>${city.name}</td>
+                                <td>${city.abbr}</td>
+                                <td>${timeString}</td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+
+                    updateTable();
+                    setInterval(updateTable, 1000);
+                </script>
+            </section>
+
+        </div>
+    </section>
+
+</body>
+
+</html>
