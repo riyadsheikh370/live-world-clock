@@ -2,18 +2,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live world clock</title>
+    <!-- Basic SEO -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>World Clock Table - Check Time Across Cities</title>
+    <meta name="description"
+        content="View the current time in major cities worldwide instantly. Our free World Clock Table helps you track local times across different time zones in real time.">
+    <meta name="keywords" content="world clock, time zones, local time, online clock, city time table" />
+    <meta name="author" content="Developed by rafusoft.com">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="#" />
+
 </head>
 
 <body>
+
     <section class="">
         <div class="container my-4">
 
             <!-- Clocks Section -->
-            <section style="padding:40px 20px;background:#EDECF2;font-family:Arial,sans-serif;">
-                <h1 style="text-align:center;margin-bottom:30px;color:#333;">Analog Clocks</h1>
+            <section style="padding:40px 20px;font-family:Arial,sans-serif;">
+                <h1 style="text-align:center;margin-bottom:30px;color:#333;">Analog clocks</h1>
 
                 <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:40px;">
                     <div class="clock-wrapper">
@@ -149,8 +158,6 @@
                     }
                 </style>
 
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
                 <script>
                     // Cities array (use everywhere)
                     const cities = [
@@ -281,7 +288,174 @@
                     });
                 </script>
             </section>
+        </div>
+    </section>
 
+    <section style="background:#F15A29;padding:10px 0;font-family:Arial,sans-serif;position:relative;">
+        <!-- Full Width Marquee Container -->
+        <div style="width:100%;overflow:hidden;position:relative;">
+            <div id="news-marquee" class="marquee">
+                <div class="marquee-content" id="news-content"></div>
+            </div>
+
+            <!-- Floating Edit Button (Left Side) -->
+            <button id="edit-btn" style="position:absolute;top:50%;left:10px;transform:translateY(-50%);
+        display:flex;align-items:center;gap:8px;
+        background:linear-gradient(135deg,#F15A29,#F15A29);
+        color:#fff;border:none;border-radius:50px;
+        padding:12px 20px;cursor:pointer;font-size:14px;font-weight:bold;
+        box-shadow:0 6px 12px rgba(0,0,0,0.25);transition:all 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708L5.207 14.5H2v-3.207L12.146.146zM11.207 2L3 10.207V13h2.793L14 4.793 11.207 2z" />
+                </svg>
+                Edit
+            </button>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.4);align-items:center;justify-content:center;z-index:999;">
+            <div
+                style="background:#fff;padding:20px 25px;border-radius:10px;min-width:320px;box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+                <h3 style="margin-bottom:15px;color:#333;">Edit News Items</h3>
+                <input id="news1" type="text"
+                    style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #ccc;border-radius:5px;">
+                <input id="news2" type="text"
+                    style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #ccc;border-radius:5px;">
+                <input id="news3" type="text"
+                    style="width:100%;padding:8px;margin-bottom:15px;border:1px solid #ccc;border-radius:5px;">
+                <div style="display:flex;justify-content:space-between;">
+                    <button id="save-news"
+                        style="background:#F15A29;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;">Save</button>
+                    <button id="cancel-edit"
+                        style="background:#ccc;color:#333;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Full Width Marquee Styles */
+            .marquee {
+                display: flex;
+                overflow: hidden;
+                white-space: nowrap;
+                width: 100%;
+                padding: 10px 0;
+            }
+
+            .marquee-content {
+                display: inline-flex;
+                animation: scrollNews 20s linear infinite;
+                will-change: transform;
+            }
+
+            .marquee-content div {
+                display: inline-block;
+                padding: 0 50px;
+                font-size: 18px;
+                color: #fff;
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+
+            .marquee-content div::after {
+                content: "|";
+                margin-left: 50px;
+                color: #ffb399;
+            }
+
+            @keyframes scrollNews {
+                from {
+                    transform: translateX(0);
+                }
+
+                to {
+                    transform: translateX(-50%);
+                }
+            }
+
+            /* Edit Button Hover */
+            #edit-btn:hover {
+                transform: translateY(-50%) scale(1.1);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+                background: linear-gradient(135deg, #FF7F50, #FF4500);
+            }
+
+            /* Mobile Responsive */
+            @media (max-width: 600px) {
+                #edit-btn {
+                    left: 10px;
+                    bottom: -60px;
+                    top: auto;
+                    transform: none;
+                    border-radius: 25px;
+                    padding: 10px 16px;
+                    font-size: 13px;
+                }
+
+                .marquee-content div {
+                    font-size: 14px;
+                    padding: 0 20px;
+                }
+            }
+        </style>
+    </section>
+
+    <script>
+        // Initial news items
+        let newsItems = [
+            "Bangladesh wins cricket series against India",
+            "Stock market hits record high today",
+            "Weather alert: Heavy rain expected tomorrow"
+        ];
+
+        const marqueeContent = document.getElementById("news-content");
+
+        function renderNews(keepSpeed = false) {
+            const oldAnimation = marqueeContent.style.animation;
+            marqueeContent.innerHTML = "";
+            [...newsItems, ...newsItems].forEach(item => {
+                const div = document.createElement("div");
+                div.textContent = item;
+                marqueeContent.appendChild(div);
+            });
+            if (keepSpeed) marqueeContent.style.animation = oldAnimation;
+            else marqueeContent.style.animation = "scrollNews 20s linear infinite";
+        }
+
+        renderNews();
+
+        // Modal logic
+        const editBtn = document.getElementById("edit-btn");
+        const modal = document.getElementById("edit-modal");
+        const saveBtn = document.getElementById("save-news");
+        const cancelBtn = document.getElementById("cancel-edit");
+
+        editBtn.addEventListener("click", () => {
+            document.getElementById("news1").value = newsItems[0] || "";
+            document.getElementById("news2").value = newsItems[1] || "";
+            document.getElementById("news3").value = newsItems[2] || "";
+            modal.style.display = "flex";
+        });
+
+        cancelBtn.addEventListener("click", () => modal.style.display = "none");
+
+        saveBtn.addEventListener("click", () => {
+            newsItems = [
+                document.getElementById("news1").value.trim(),
+                document.getElementById("news2").value.trim(),
+                document.getElementById("news3").value.trim()
+            ].filter(Boolean);
+            renderNews(true);
+            modal.style.display = "none";
+        });
+    </script>
+
+
+
+    <section class="">
+        <div class="container my-4">
             <!-- World Clock Table Section -->
             <section style="padding:40px 20px;background:#F0F0F5;font-family:Arial,sans-serif;min-height:70vh;">
                 <h1 style="text-align:center;margin-bottom:40px;color:#333;">World Clock Table</h1>
@@ -340,11 +514,11 @@
                             const timeString = now.toLocaleTimeString('en-US', options);
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                <td>${index + 1}</td>
-                                <td>${city.name}</td>
-                                <td>${city.abbr}</td>
-                                <td>${timeString}</td>
-                            `;
+                                                      <td>${index + 1}</td>
+                                                      <td>${city.name}</td>
+                                                      <td>${city.abbr}</td>
+                                                      <td>${timeString}</td>
+                                                  `;
                             tbody.appendChild(row);
                         });
                     }
@@ -354,8 +528,12 @@
                 </script>
             </section>
 
+
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </body>
 
